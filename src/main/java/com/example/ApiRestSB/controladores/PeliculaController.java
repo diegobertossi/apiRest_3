@@ -3,6 +3,7 @@ package com.example.ApiRestSB.controladores;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.ApiRestSB.modelos.Pelicula;
 import com.example.ApiRestSB.repositorios.PeliculaRepository;
@@ -25,6 +28,18 @@ public class PeliculaController {
 		this.repositorio = repositorio;
 	}
 
+	
+	
+//	@Configuration
+//	public class WebConfig implements WebMvcConfigurer {
+//
+//	    @Override
+//	    public void addCorsMappings(CorsRegistry registry) {
+//	        registry.addMapping("/api/**")
+//	                .allowedOrigins("http://127.0.0.1:5500")
+//	                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+//	    }
+//	}
 //	@GetMapping("/api/crearPeliculas")
 //	public void crearPeliculas() {
 //
@@ -76,7 +91,7 @@ public class PeliculaController {
 	@PutMapping("/api/Guardarpelicula")
 	public ResponseEntity<Pelicula> actualizarPelicula(@RequestBody Pelicula pelicula) {
 
-		if (pelicula.getId() == null || repositorio.existsById(pelicula.getId())) {
+		if (pelicula.getId() == null || !repositorio.existsById(pelicula.getId())) {
 			
 			
 			return ResponseEntity.badRequest().build();
@@ -88,7 +103,7 @@ public class PeliculaController {
 	}
 	
 	
-	@CrossOrigin("http://127.0.0.1:5500")
+	 @CrossOrigin(origins = "http://127.0.0.1:5500")
 	@DeleteMapping("/api/pelicula/{id}") 	 
 	public ResponseEntity<Pelicula> borrarPelicula(@PathVariable Long id) {
 
